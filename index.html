@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to speech convertor</title>
+    
+    <!-- icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        /* this code is changed in media queries */
+        *{margin: 0; padding: 0; box-sizing: border-box;}
+        button{padding: 0; cursor: pointer;;}
+        html{font: 15px system-ui, sans-serif;}
+        img{vertical-align: bottom;}
+        h1{font-size: 2.5rem;}
+        h2{font-size: 2rem;}
+        h3{font-size: 1.4rem;}
+        h4{font-size: 1.2rem;}
+
+        .btn, select, [type="submit"], input[type="reset"], input[type="text"],input[type="number"],input[type="password"],input[type="search"],input[type="email"] { height: 36px; padding: 8px 12px; border: 1px solid #e9dbdb; color: inherit; border-radius: 5px; vertical-align: middle; margin: 5px;}
+
+        .main {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(45deg, rgb(15, 15, 46), navy, rgb(11, 11, 134), navy);
+        }
+
+        .main h1 {
+            color: #fed;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .main h1 span {color: rgb(221, 175, 91); border-bottom: 2px solid;}
+
+        textarea {
+            width: 600px;
+            height: 250px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgb(38, 38, 65);
+            border: none;
+            outline: none;
+            padding: 1rem;
+            resize: none;
+            margin-bottom: 1rem;
+            background: rgb(159, 213, 248);
+            /* color: #fff; */
+            font-size: 1.1rem;
+        }
+
+        .row {
+            width: 600px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .row button {
+            background: rgb(170, 183, 31);
+            padding: 10px 30px;
+            border-radius: 30px;
+            outline: 0;
+            border: 0;
+        }
+        .row select {
+            flex: 1;
+            background: rgb(80, 118, 157);
+            outline: 0;
+            border: 0;
+            border-radius: 30px;
+            height: 36px;;
+        }
+
+        @media screen and (max-width: 667px) {
+            .main h1 {color: red; text-align: center;}
+            .main textarea {
+                max-width: 80%;
+            }
+            .main .row {
+                max-width: 80%;
+                flex-direction: column;
+                gap: 0;
+            }
+            .row select {
+                flex: auto;
+                max-width: 80%;
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <h1>Text To Speech <span>Convertor</span></h1>
+        <textarea placeholder="Write something here.."></textarea>
+        <div class="row">
+            <select></select>
+            <button class="btn play">Listen</button>
+        </div>
+    </div>
+
+   
+    
+
+
+    <script>
+
+        // code for text to speech
+        let speech = new SpeechSynthesisUtterance();
+
+        let voices = [];
+        let voiceSelect = document.querySelector(".main select");
+        window.speechSynthesis.onvoiceschanged = () => {
+            voices = window.speechSynthesis.getVoices();
+            speech.voice = voices[0];
+            voices.forEach((voice, i) => (voiceSelect.options[i] = new Option(voice.name, i)));
+        };
+
+        voiceSelect.addEventListener("change", function() {
+            speech.voice = voices[voiceSelect.value];
+        });
+
+
+
+        let playBtn = document.querySelector(".play");
+        // play
+        playBtn.addEventListener("click", function() {
+            speech.text = document.querySelector(".main textarea").value;
+            window.speechSynthesis.speak(speech);
+        });
+
+
+
+        // change the bg color based on the below conditions
+        function changeBackground() {
+                const hr = new Date().getHours();
+                const myBody = document.querySelector("body");
+                myBody.style.background = (hr >= 6 && hr < 19) ? "#cc5858" : "#aa2d99";
+            }
+            changeBackground();
+        </script>        
+
+</body>
+</html>
+
+
+
+
+
+
+
